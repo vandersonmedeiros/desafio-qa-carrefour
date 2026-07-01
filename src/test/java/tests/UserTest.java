@@ -47,4 +47,60 @@ public class UserTest extends BaseTest {
             .statusCode(200)
             .body("quantidade", greaterThanOrEqualTo(0));
     }
+
+    @Test
+    @DisplayName("Deve atualizar um usuario com sucesso")
+    public void testAtualizarUsuario() {
+        // 1. Criamos um usuário primeiro para ter o que atualizar
+        String email = faker.internet().emailAddress();
+        UserPayload payload = new UserPayload("Nome Inicial", email, "senha123", "true");
+        
+        String idUsuario = given()
+            .header("Authorization", token)
+            .contentType(ContentType.JSON)
+            .body(payload)
+        .when()
+            .post("/usuarios")
+        .then()
+            .extract().path("_id");
+
+        // 2. Atualizamos esse mesmo usuário
+        UserPayload novoPayload = new UserPayload("Nome Alterado", email, "novaSenha123", "true");
+        
+        given()
+            .header("Authorization", token)
+            .contentType(ContentType.JSON)
+            .body(novoPayload)
+        .when()
+            .put("/usuarios/" + idUsuario)
+        .then()
+            .statusCode(200)
+            .body("message", equalTo("Registro alterado com sucesso"));
+    }
+
+    @Test
+    @DisplayName("Deve excluir um usuario com sucesso")
+    public void testExcluirUsuario() {
+        // 1. Criamos um usuário específico para o teste de exclusão
+        String email = faker.internet().emailAddress();
+        UserPayload payload = new UserPayload("Para Excluir", email, "senha123", "true");
+        
+        String idUsuario = given()
+            .header("Authorization", token)
+            .contentType(ContentType.JSON)
+            .body(payload)
+        .when()
+            .post("/usuarios")
+        .then()
+            .extract().path("_id");
+
+        // 2. Excluímos o usuário criado
+        given()
+            .header("Authorization", token)
+        .when()
+            .delete("/usuarios/" + idUsuario)
+        .then()
+            .statusCode(200)
+            .body("message", equalTo("Registro excluído com sucesso"));
+    }
 }

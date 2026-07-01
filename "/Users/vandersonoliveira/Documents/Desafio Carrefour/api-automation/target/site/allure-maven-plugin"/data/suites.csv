@@ -1,0 +1,5 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Tue Jun 30 22:09:07 GMT-03:00 2026","Tue Jun 30 22:09:08 GMT-03:00 2026","813","","tests.UserTest","","tests.UserTest","testListarUsuarios","Deve listar os usuários com sucesso","Valida a listagem de usuários via GET /usuarios"
+"passed","Tue Jun 30 22:09:06 GMT-03:00 2026","Tue Jun 30 22:09:07 GMT-03:00 2026","580","","tests.UserTest","","tests.UserTest","testCriarUsuarioComSucesso","Deve criar um novo usuário com sucesso","Valida a criação de um novo usuário via POST /usuarios"
+"passed","Tue Jun 30 22:09:08 GMT-03:00 2026","Tue Jun 30 22:09:10 GMT-03:00 2026","2260","","tests.UserTest","","tests.UserTest","testExcluirUsuario","Deve excluir um usuário com sucesso","Valida a exclusão de um usuário via DELETE /usuarios/{id}"
+"passed","Tue Jun 30 22:09:05 GMT-03:00 2026","Tue Jun 30 22:09:06 GMT-03:00 2026","1254","","tests.UserTest","","tests.UserTest","testAtualizarUsuario","Deve atualizar um usuário com sucesso","Valida a atualização de um usuário existente via PUT /usuarios/{id}"

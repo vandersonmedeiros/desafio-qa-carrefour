@@ -1,0 +1,14 @@
+# Node
+node_modules/
+
+# Java / Maven
+target/
+.allure/
+allure-results/
+.gradle/
+.idea/
+*.class
+
+# Sistema
+.DS_Store*.apk
+*.apk

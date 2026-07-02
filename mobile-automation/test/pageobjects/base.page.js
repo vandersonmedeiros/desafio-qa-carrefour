@@ -1,3 +1,10 @@
+const { $ } = require('@wdio/globals');
+
+/**
+ * Classe base (Core) para os Page Objects.
+ * Centraliza os comandos do WebdriverIO criando "Custom Wrappers".
+ * Garante esperas explícitas automáticas, reduzindo a intermitência (flakiness) dos testes.
+ */
 class BasePage {
   constructor() {
     this.timeout = 10000;
@@ -21,13 +28,13 @@ class BasePage {
 
   async getText(selector) {
     const element = await this.waitForElement(selector);
-    return element.getText();
+    return await element.getText();
   }
 
-  async isDisplayed(selector, timeout = this.timeout) {
+  async isDisplayed(selector) {
     try {
       const element = await $(selector);
-      return element.isDisplayed({ timeout });
+      return await element.isDisplayed();
     } catch (error) {
       return false;
     }

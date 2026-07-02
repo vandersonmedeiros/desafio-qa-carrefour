@@ -9,6 +9,12 @@ allure-results/
 .idea/
 *.class
 
-# Sistema
-.DS_Store*.apk
+# Mobile Apps (Binários baixados)
+apps/
 *.apk
+*.app
+*.ipa
+
+# Sistema e IDE
+.DS_Store
+.vscode/

@@ -8,10 +8,10 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest 
     defaults:
       run:
-        working-directory: mobile-automation # <--- O segredo está aqui!
+        working-directory: mobile-automation
 
     steps:
       - name: Checkout do código
@@ -25,7 +25,24 @@ jobs:
       - name: Instalar Dependências
         run: npm install
 
-      - name: Validar Execução dos Testes
-        # Rodamos com --dry-run ou apenas validamos a instalação
-        # pois rodar emuladores mobile no CI exige configurações complexas (headless)
-        run: echo "Testes Mobile configurados e prontos para rodar"
+      - name: Baixar Aplicativo de Demonstração
+        run: npm run download:demo-app
+
+      # Essa action sobe o emulador Android, espera ele ficar pronto e roda o script npm test
+      - name: Executar Testes E2E no Emulador Android
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          target: default
+          arch: x86_64
+          profile: Nexus 6
+          working-directory: mobile-automation
+          script: npm test
+
+      - name: Salvar Resultados do Allure (Artifact)
+        uses: actions/upload-artifact@v4
+        if: always() # Garante que vai salvar mesmo se algum teste falhar
+        with:
+          name: allure-results-mobile
+          path: mobile-automation/allure-results/
+          retention-days: 5

@@ -1,4 +1,3 @@
-Markdown
 # 🛒 Desafio de Automação de Testes - Carrefour
 
 Este repositório contém a solução técnica para o desafio de automação de testes (API e Mobile) do processo seletivo do Carrefour. O projeto foi estruturado no modelo de **Monorepo**, garantindo a centralização e organização das suítes de teste.
@@ -13,7 +12,7 @@ Este repositório contém a solução técnica para o desafio de automação de 
 | **Mobile** | JavaScript, Node.js, WebdriverIO, Appium, Mocha, Chai |
 | **Padrões de Projeto** | Page Objects Pattern, Data-Driven Testing, Custom Base Page |
 | **Relatórios** | Allure Report |
-| **CI/CD** | GitHub Actions (Com execução de emuladores em nuvem macOS) |
+| **CI/CD** | GitHub Actions (Execução de API e Validação Estrutural Mobile) |
 
 ---
 
@@ -46,6 +45,7 @@ DESAFIO-CARREFOUR/
 └── README.md
 
 🚀 Como Executar os Projetos
+
 1. Automação de API (RestAssured)
 Os testes de API cobrem 100% das operações CRUD de usuários (Criação, Leitura, Atualização e Exclusão), com validação de autenticação via token JWT e regras de negócio estipuladas no desafio.
 
@@ -90,7 +90,6 @@ npm run report
 (Nota: A captura de screenshots em caso de falha ocorre automaticamente durante a execução).
 
 📊 Relatórios e Evidências
-
 O projeto utiliza o Allure Report em ambas as frentes (API e Mobile).
 
 Os resultados brutos são gerados automaticamente nas pastas allure-results.
@@ -98,14 +97,11 @@ Os resultados brutos são gerados automaticamente nas pastas allure-results.
 O dashboard compila: resumo das execuções, tempo de resposta, screenshots de falhas passo a passo e detalhes de infraestrutura.
 
 ⚙️ Integração Contínua (CI/CD)
-
 Os projetos estão configurados para rodar em pipelines isoladas via GitHub Actions.
 A cada novo push ou Pull Request na branch principal, a esteira entra em ação para:
 
-1. Instalar as dependências necessárias.
+1. Instalar as dependências necessárias de cada projeto.
 
-2. Fazer o provisionamento de um emulador Android via Headless Runner na nuvem (no caso do Mobile).
+2. Executar os testes de API e exportar o relatório HTML do Allure como artefato.
 
-3. Executar as suítes de teste.
-
-4. Exportar o Relatório HTML do Allure como um artefato disponível para download diretamente na aba Actions do GitHub, garantindo feedback imediato sobre a saúde da aplicação.
+3. Validar a integridade estrutural, build e dependências do projeto Mobile, garantindo que a base está pronta para execução.

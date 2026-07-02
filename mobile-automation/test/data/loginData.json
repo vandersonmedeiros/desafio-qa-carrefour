@@ -1,13 +1,13 @@
 [
   {
-    "cenario": "Cenário 8: deve exibir mensagem de erro ao inserir email inválido",
+    "cenario": "Cenário 8: Deve exibir mensagem de erro ao inserir email inválido",
     "email": "email_invalido",
     "senha": "123",
     "mensagemErroEsperada": "Please enter a valid email address",
     "tipoErro": "email"
   },
   {
-    "cenario": "Cenário 9: deve exibir mensagem de erro ao inserir senha curta",
+    "cenario": "Cenário 9: Deve exibir mensagem de erro ao inserir senha curta",
     "email": "teste@qa.com",
     "senha": "123",
     "mensagemErroEsperada": "Please enter at least 8 characters",

@@ -1,3 +1,5 @@
+const { $ } = require('@wdio/globals');
+
 class FormsPage {
     get inputField() { return $('~text-input'); }
     get inputTextResult() { return $('~input-text-result'); }
@@ -12,4 +14,5 @@ class FormsPage {
         await this.switchBtn.click();
     }
 }
+
 module.exports = new FormsPage();

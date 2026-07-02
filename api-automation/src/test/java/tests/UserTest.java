@@ -6,24 +6,24 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import net.datafaker.Faker;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import payloads.UserPayload;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 
+/**
+ * Suíte de testes automatizados para a API de Usuários.
+ * Cobre as operações de CRUD (Create, Read, Update, Delete),
+ * validações de regras de negócio e limites de requisição (Rate Limit).
+ */
 @Epic("API - Serverest")
 @Feature("Gestão de usuários")
 public class UserTest extends BaseTest {
 
         private static final Faker FAKER = new Faker();
-
-        // ========================================================================
-        // CENÁRIOS DE SUCESSO (Caminho Feliz)
-        // ========================================================================
 
         @Test
         @DisplayName("Deve criar um novo usuário com sucesso")
@@ -68,7 +68,6 @@ public class UserTest extends BaseTest {
         public void testAtualizarUsuario() {
                 String email = FAKER.internet().emailAddress();
                 String idUsuario = criarUsuario("Nome Inicial", email, "senha123");
-
                 UserPayload novoPayload = new UserPayload("Nome Alterado", email, "novaSenha123", "true");
 
                 given()
@@ -98,21 +97,14 @@ public class UserTest extends BaseTest {
                                 .body("message", equalTo("Registro excluído com sucesso"));
         }
 
-        // ========================================================================
-        // CENÁRIOS NEGATIVOS (Exceções e Validações)
-        // ========================================================================
-
         @Test
         @DisplayName("Não deve permitir cadastrar usuário com e-mail já existente")
         @Story("Cadastro de usuário - Negativo")
         @Description("Valida o bloqueio de cadastro para e-mails duplicados via POST /usuarios")
         public void testCriarUsuarioComEmailDuplicado() {
                 String emailDuplicado = FAKER.internet().emailAddress();
-
-                // Criando o primeiro usuário
                 criarUsuario("Primeiro Usuario", emailDuplicado, "senha123");
 
-                // Tentando criar o segundo com o mesmo e-mail
                 UserPayload payloadDuplicado = new UserPayload(
                                 FAKER.name().fullName(),
                                 emailDuplicado,
@@ -134,7 +126,6 @@ public class UserTest extends BaseTest {
         @Story("Consulta de usuários - Negativo")
         @Description("Valida o retorno correto ao buscar um usuário com ID inválido via GET /usuarios/{id}")
         public void testBuscarUsuarioInexistente() {
-                // Trocado para exatamente 16 caracteres alfanuméricos
                 given()
                                 .spec(requestSpec)
                                 .when()
@@ -149,8 +140,6 @@ public class UserTest extends BaseTest {
         @Story("Exclusão de usuário - Negativo")
         @Description("Valida a tentativa de exclusão de um ID que não existe via DELETE /usuarios/{id}")
         public void testExcluirUsuarioInexistente() {
-                // Trocado para exatamente 16 caracteres alfanuméricos para evitar o erro de
-                // formato
                 given()
                                 .spec(requestSpec)
                                 .when()
@@ -160,10 +149,6 @@ public class UserTest extends BaseTest {
                                 .body("message", equalTo("Nenhum registro excluído"));
         }
 
-        // ========================================================================
-        // CENÁRIOS DE DESEMPENHO / RATE LIMIT
-        // ========================================================================
-
         @Test
         @DisplayName("Deve validar Rate Limit da API")
         @Story("Segurança e Desempenho - Rate Limit")
@@ -171,7 +156,6 @@ public class UserTest extends BaseTest {
         public void testValidarRateLimit() {
                 int statusCode = 200;
 
-                // Dispara requisições em lote
                 for (int i = 0; i < 50; i++) {
                         statusCode = given()
                                         .spec(requestSpec)
@@ -182,21 +166,15 @@ public class UserTest extends BaseTest {
                                         .statusCode();
 
                         if (statusCode == 429) {
-                                break; // Se o servidor barrar, encerra o loop
+                                break;
                         }
                 }
 
-                // Aceita 429 (esperado) ou 200 (se o ServeRest não aplicar o rate limit na
-                // nuvem do GitHub Actions)
-                org.junit.jupiter.api.Assertions.assertTrue(
+                Assertions.assertTrue(
                                 statusCode == 429 || statusCode == 200,
                                 "O status code deveria ser 429 (Rate Limit) ou 200 (API instável). Retornado: "
                                                 + statusCode);
         }
-
-        // ========================================================================
-        // MÉTODOS AUXILIARES
-        // ========================================================================
 
         private String criarUsuario(String nome, String email, String password) {
                 return given()
